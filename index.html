@@ -9,7 +9,7 @@
   <h1>WebSocket Client</h1>
   <script>
     let socket;
-    const serverUrl = "ws://localhost:5000";  // WebSocket URL
+    const serverUrl = `wss:${window.location.href}`;  // WebSocket URL
 
     function connectWebSocket() {
       socket = new WebSocket(serverUrl);
