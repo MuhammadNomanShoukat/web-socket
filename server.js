@@ -13,7 +13,7 @@ app.use(cors({ extended: true }));
 app.use("/video/generateLink", require("./routes/video/generateLink.js"));
 app.use("/user/jwtAuth", require("./routes/user/userAuth.js"));
 
-app.get('/connect', (req, res)=>{
+app.get('/', (req, res)=>{
   res.sendFile(path.join(__dirname, "index.html"))
 })
 
