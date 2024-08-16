@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Example</title>
+</head>
+<body>
+  <h1>WebSocket Client</h1>
+  <script>
+    let socket;
+    const serverUrl = "ws://localhost:5000";  // WebSocket URL
+
+    function connectWebSocket() {
+      socket = new WebSocket(serverUrl);
+
+      // When the connection is successfully established
+      socket.onopen = () => {
+        console.log("Connected to WebSocket server");
+        // Send a message to the server
+        socket.send("Hello Server, I'm the client!");
+      };
+
+      // Handle incoming messages from the server
+      socket.onmessage = (event) => {
+        console.log("Message from server:", event.data);
+      };
+
+      // If the connection is closed (due to server disconnection or other reasons)
+      socket.onclose = (event) => {
+        console.log("WebSocket connection closed, attempting to reconnect...", event.reason);
+        // Automatically attempt to reconnect after 2 seconds
+        setTimeout(connectWebSocket, 2000);
+      };
+
+      // Handle any WebSocket errors
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        // Close the socket and trigger the `onclose` event for automatic reconnection
+        socket.close();
+      };
+    }
+
+    // Initiate WebSocket connection
+    connectWebSocket();
+
+    // Optionally, you can have a function to send messages from the client to the server
+    function sendMessage(message) {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+      } else {
+        console.log("WebSocket is not open. Message not sent:", message);
+      }
+    }
+
+    // Example: Send a message every 5 seconds (for testing purposes)
+    setInterval(() => {
+      sendMessage("Ping from client");
+    }, 5000);
+  </script>
+</body>
+</html>
